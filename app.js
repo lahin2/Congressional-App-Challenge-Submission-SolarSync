@@ -119,7 +119,7 @@ class SolarOptimizer {
         }
 
         try {
-            const API_KEY = '4d134b61df3140bc9ce15957253010'; // Replace with your actual API key
+            const API_KEY = '4d134b61df3140bc9ce15957253010';
             
             // Check if API key is set
             if (API_KEY === 'YOUR_API_KEY_HERE') {
@@ -1064,5 +1064,6 @@ class SolarOptimizer {
 document.addEventListener('DOMContentLoaded', () => {
     new SolarOptimizer();
 });
+
 
 
