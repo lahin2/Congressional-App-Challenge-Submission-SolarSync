@@ -1,7 +1,3 @@
-// Solar Power Optimizer App
-// Set your DeepSeek API key here
-const DEEPSEEK_API_KEY = 'Ysk-1a4bc8c6a2bf485ca2350e2f004e21a7';
-
 class SolarOptimizer {
     constructor() {
         this.latitude = null;
@@ -22,8 +18,7 @@ class SolarOptimizer {
         document.getElementById('refreshWeatherBtn').addEventListener('click', () => this.refreshWeather());
         const assistantBtn = document.getElementById('assistantAskBtn');
         if (assistantBtn) assistantBtn.addEventListener('click', () => this.askApplianceAssistant());
-        // Pre-fill DeepSeek API key from localStorage
-        // No UI key storage; API key is set in code at DEEPSEEK_API_KEY
+
         
         // Handle Enter key in address input
         document.getElementById('addressInput').addEventListener('keypress', (e) => {
@@ -187,33 +182,7 @@ class SolarOptimizer {
         };
     }
 
-    // Generate mock weather data for demonstration
-    generateMockWeatherData() {
-        const now = new Date();
-        const hour = now.getHours();
-        
-        // Simulate different weather conditions based on time of day
-        const baseTemp = 20 + Math.sin((hour - 6) * Math.PI / 12) * 10; // Temperature varies throughout day
-        const cloudCover = Math.random() * 60 + 20; // Random cloud cover between 20-80%
-        const humidity = Math.random() * 40 + 40; // Random humidity between 40-80%
-        const uvIndex = Math.max(0, Math.sin((hour - 6) * Math.PI / 12) * 8); // UV index follows sun pattern
-        
-        return {
-            isMockData: true,
-            current: {
-                temp: Math.round(baseTemp),
-                clouds: Math.round(cloudCover),
-                humidity: Math.round(humidity),
-                uvi: Math.round(uvIndex * 10) / 10
-            },
-            hourly: Array.from({ length: 24 }, (_, i) => ({
-                temp: Math.round(20 + Math.sin((i - 6) * Math.PI / 12) * 10 + (Math.random() - 0.5) * 4),
-                clouds: Math.round(Math.random() * 60 + 20),
-                humidity: Math.round(Math.random() * 40 + 40),
-                uvi: Math.max(0, Math.sin((i - 6) * Math.PI / 12) * 8)
-            }))
-        };
-    }
+
 
     // Update weather display in the UI
     updateWeatherDisplay() {
@@ -1095,4 +1064,5 @@ class SolarOptimizer {
 document.addEventListener('DOMContentLoaded', () => {
     new SolarOptimizer();
 });
+
 
