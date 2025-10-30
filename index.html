@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Power Optimizer - Smart Appliance Scheduling</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="sun-logo">
+                        <circle cx="12" cy="12" r="5" class="sun-circle"/>
+                        <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" class="sun-rays" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h1>Solar Optimizer</h1>
+                </div>
+                <p class="tagline">Smart solar energy management for your home</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- Location Section -->
+            <section class="card location-section">
+                <h2>Location Setup</h2>
+                <div class="location-controls">
+                    <button id="getLocationBtn" class="btn btn-primary">
+                        Use My Location
+                    </button>
+                    <div class="address-input">
+                        <input type="text" id="addressInput" placeholder="Enter your address" />
+                        <button id="addressBtn" class="btn btn-primary">
+                            Find Address
+                        </button>
+                    </div>
+                    <div class="manual-input">
+                        <input type="text" id="latInput" placeholder="Latitude" />
+                        <input type="text" id="lonInput" placeholder="Longitude" />
+                        <button id="manualLocationBtn" class="btn btn-secondary">Set Coordinates</button>
+                    </div>
+                </div>
+                <div id="locationDisplay" class="location-display"></div>
+            </section>
+
+            <!-- Weather Information -->
+            <section class="card weather-section">
+                <div class="weather-header">
+                    <h2>Current Weather Conditions</h2>
+                    <button id="refreshWeatherBtn" class="btn btn-secondary" style="display: none;">
+                        Refresh Weather
+                    </button>
+                </div>
+                <div id="weatherDisplay" class="weather-display">
+                    <p>Weather data will appear here once location is set.</p>
+                </div>
+            </section>
+
+            <!-- Solar Production Chart -->
+            <section class="card chart-section">
+                <h2>Solar Production Forecast</h2>
+                <div id="chartLegend" class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-line theoretical"></div>
+                        <span>Perfect Conditions (Underlay)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line weather-adjusted"></div>
+                        <span>Current Weather Conditions</span>
+                    </div>
+                </div>
+                <div id="chartContainer">
+                    <canvas id="solarChart"></canvas>
+                </div>
+                <div id="currentPowerDisplay" class="current-power"></div>
+            </section>
+
+            <!-- Peak Hours Display -->
+            <section class="card peak-hours-section">
+                <h2>Peak Solar Hours</h2>
+                <div id="peakHoursDisplay" class="peak-hours"></div>
+            </section>
+
+            <!-- Appliance Assistant -->
+            <section class="card assistant-section">
+                <h2>Appliance Assistant</h2>
+                <p class="section-description">Ask when to run an appliance based on today's solar and weather.</p>
+                <div class="assistant-controls">
+                    <div class="assistant-row">
+                        <select id="applianceSelect">
+                            <option value="Washing Machine">Washing Machine (≈1–1.5 kW)</option>
+                            <option value="Dishwasher">Dishwasher (≈1.2–1.5 kW)</option>
+                            <option value="Dryer">Electric Dryer (≈2–3 kW)</option>
+                            <option value="Air Conditioner">Air Conditioner (≈1.5–3.5 kW)</option>
+                            <option value="EV Charger">EV Charger (≈3–7 kW)</option>
+                            <option value="Pool Pump">Pool Pump (≈1–2 kW)</option>
+                        </select>
+                        <input type="text" id="assistantQuestion" placeholder="e.g., When should I run the dryer today?" />
+                        <button id="assistantAskBtn" class="btn btn-primary">Ask</button>
+                    </div>
+                </div>
+                <div id="assistantResponse" class="assistant-response"></div>
+            </section>
+
+            <!-- Appliance Recommendations -->
+            <section class="card recommendations-section">
+                <h2>Smart Scheduling</h2>
+                <p class="section-description">Optimize your energy usage with intelligent appliance scheduling</p>
+                <div id="applianceList" class="appliance-list">
+                    <div class="appliance-item">
+                        <div class="appliance-info">
+                            <div>
+                                <h3>Washing Machine</h3>
+                                <span class="power-usage">1000-1500W</span>
+                            </div>
+                        </div>
+                        <div class="appliance-time" data-appliance="washing-machine"></div>
+                    </div>
+                    <div class="appliance-item">
+                        <div class="appliance-info">
+                            <div>
+                                <h3>Dishwasher</h3>
+                                <span class="power-usage">1200-1500W</span>
+                            </div>
+                        </div>
+                        <div class="appliance-time" data-appliance="dishwasher"></div>
+                    </div>
+                    <div class="appliance-item">
+                        <div class="appliance-info">
+                            <div>
+                                <h3>Electric Dryer</h3>
+                                <span class="power-usage">2000-3000W</span>
+                            </div>
+                        </div>
+                        <div class="appliance-time" data-appliance="dryer"></div>
+                    </div>
+                    <div class="appliance-item">
+                        <div class="appliance-info">
+                            <div>
+                                <h3>Air Conditioner</h3>
+                                <span class="power-usage">1500-3500W</span>
+                            </div>
+                        </div>
+                        <div class="appliance-time" data-appliance="ac"></div>
+                    </div>
+                    <div class="appliance-item">
+                        <div class="appliance-info">
+                            <div>
+                                <h3>EV Charger</h3>
+                                <span class="power-usage">3000-7000W</span>
+                            </div>
+                        </div>
+                        <div class="appliance-time" data-appliance="ev"></div>
+                    </div>
+                    <div class="appliance-item">
+                        <div class="appliance-info">
+                            <div>
+                                <h3>Pool Pump</h3>
+                                <span class="power-usage">1000-2000W</span>
+                            </div>
+                        </div>
+                        <div class="appliance-time" data-appliance="pool"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tips Section -->
+            <section class="card tips-section">
+                <h2>Optimization Tips</h2>
+                <ul class="tips-list">
+                    <li>Run high-power appliances during peak solar hours (typically 10 AM - 3 PM)</li>
+                    <li>Charge EV overnight only if necessary; prioritize daytime charging</li>
+                    <li>Pre-cool your home during peak solar hours instead of evening</li>
+                    <li>Use timer settings on appliances to automate optimal scheduling</li>
+                    <li>Consider battery storage to extend solar power availability</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>Solar calculations based on your location and current date. Results are estimates for planning purposes.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
